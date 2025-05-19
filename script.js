@@ -1,49 +1,21 @@
 function submitFeedback(feedback) {
-  // Send feedback to Google Apps Script Web App
-  fetch("https://script.google.com/macros/s/AKfycbzGMvBLlNe5nitwufh7yau5mZ1SzZdxjwbId1ukNHc925bgrprgv6Q9_oighfbfrf-8/exec", {
-    method: "POST",
+  fetch('https://script.google.com/macros/s/AKfycbzBsVUjWnKkANsJ_IlJR6m_v73cp9XxsQZJh5DP22mrkVzah-vS6AWO06DpprQS6sT4/exec', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: JSON.stringify({ feedback: feedback })
+    body: 'feedback=' + encodeURIComponent(feedback)
   })
-  .then(response => {
-    if (response.ok) {
-      console.log("Feedback submitted successfully");
-      showThankYou();
+  .then(response => response.text())
+  .then(text => {
+    if(text === "Success") {
+      alert('Thank you for your feedback!');
+      location.reload();
     } else {
-      console.error("Failed to submit feedback");
-      alert("Failed to submit feedback. Please try again.");
+      alert('Submission failed: ' + text);
     }
   })
-  .catch(error => {
-    console.error("Error submitting feedback:", error);
-    alert("Error submitting feedback. Please check your connection.");
+  .catch(err => {
+    alert('Error submitting feedback: ' + err.message);
   });
 }
-
-function showThankYou() {
-  const surveyContainer = document.getElementById('survey-container');
-  const rateButton = document.getElementById('rate-button');
-
-  surveyContainer.innerHTML = `
-    <div class="thank-you-message">
-      <h2>Thank you for your feedback!</h2>
-      <p>Your input helps us improve our service.</p>
-    </div>
-  `;
-
-  setTimeout(() => {
-    location.reload();
-  }, 10000);
-}
-
-function showSurvey() {
-  document.getElementById('survey-container').style.display = 'flex';
-  const video = document.getElementById('background-video');
-  if (video) video.pause();
-  document.getElementById('rate-button').style.display = 'none';
-}
-
-document.getElementById('background-video').addEventListener('click', showSurvey);
-document.getElementById('rate-button').addEventListener('click', showSurvey);
