@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Toilet Feedback</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Video Background -->
   <div class="video-container">
     <video id="background-video" autoplay muted loop>
-      <source src="video.mp4" type="video/mp4">
+      <source src="video.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   </div>
@@ -49,8 +49,10 @@
       </div>
     </div>
 
-    <div id="thank-you-message" class="thank-you-message" style="display:none;">
-      <h3>Thank you for your feedback!</h3>
+    <div id="thank-you-message" style="margin-top: 20px; text-align: center;"></div>
+    <div id="qr-code" style="display:none; margin-top: 10px; text-align: center;">
+      <img src="google.png" alt="QR Code to Google Rate" style="width:150px; height:150px;" />
+      <p>Scan this QR to leave a detailed review!</p>
     </div>
   </div>
 
