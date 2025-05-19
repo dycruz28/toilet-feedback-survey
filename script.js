@@ -1,36 +1,24 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWA1bTV0yT2LDfjAs6CcXzK9SaEdW5JQaxdiFOcerOC3O3aWQJz_snG5fWti5U3z7R/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbz66MwGqw-XneuWnYCFzsmXlZ219Jy9UDcnRBQnj9zu71-xLXpKzzZTmZ_P5ZOOvppi/exec';
 
 function submitFeedback(feedback) {
-  const thankYouMessage = document.getElementById('thank-you-message');
-  const qrCode = document.getElementById('qr-code');
-
-  // Prepare data payload
-  const payload = {
-    rating: feedback,
-    location: 'Calle Cafe Toilet',  // adjust or make dynamic as needed
-    timestamp: new Date().toISOString()
-  };
-
-  fetch(SCRIPT_URL, {
+  fetch(scriptURL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    body: JSON.stringify({ feedback }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
   .then(response => {
     if (response.ok) {
-      // Show thank you and QR code on successful submit
-      thankYouMessage.innerHTML = `<h3>Thank you for your feedback! We appreciate your input.</h3>`;
-      qrCode.style.display = 'block';
-
-      // Reload after 10 seconds
+      document.getElementById('thank-you-message').style.display = 'block';
       setTimeout(() => location.reload(), 10000);
     } else {
       alert('Failed to submit feedback. Please try again.');
     }
   })
   .catch(error => {
-    console.error('Submission error:', error);
-    alert('Error submitting feedback. Please check your internet connection.');
+    console.error('Error:', error);
+    alert('Failed to submit feedback. Please check your internet connection.');
   });
 }
 
