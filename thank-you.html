@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank You!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="thank-you-container">
+    <div class="thank-you-content">
+      <div class="header">
+        <img src="calle logo.png" alt="Company Logo" class="logo" />
+      </div>
+      <h1>Thank You For Your Feedback!</h1>
+      <h2>We appreciate your time in helping us improve.</h2>
+      <div class="qr-code">
+        <img src="google.png" alt="QR Code to Google Rate" />
+        <p>Scan this QR to leave a detailed review!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set a timeout to automatically refresh to the survey page after 18 seconds
+    setTimeout(function() {
+      window.location.href = "index.html";  // Redirects back to the main survey page
+    }, 18000);  // 18 seconds
+  </script>
+</body>
+</html>

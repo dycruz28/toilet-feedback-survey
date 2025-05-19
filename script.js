@@ -1,21 +1,45 @@
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWA1bTV0yT2LDfjAs6CcXzK9SaEdW5JQaxdiFOcerOC3O3aWQJz_snG5fWti5U3z7R/exec';
+
 function submitFeedback(feedback) {
-  fetch('https://script.google.com/macros/s/AKfycbzBsVUjWnKkANsJ_IlJR6m_v73cp9XxsQZJh5DP22mrkVzah-vS6AWO06DpprQS6sT4/exec', {
+  const thankYouMessage = document.getElementById('thank-you-message');
+  const qrCode = document.getElementById('qr-code');
+
+  // Prepare data payload
+  const payload = {
+    rating: feedback,
+    location: 'Calle Cafe Toilet',  // adjust or make dynamic as needed
+    timestamp: new Date().toISOString()
+  };
+
+  fetch(SCRIPT_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: 'feedback=' + encodeURIComponent(feedback)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   })
-  .then(response => response.text())
-  .then(text => {
-    if(text === "Success") {
-      alert('Thank you for your feedback!');
-      location.reload();
+  .then(response => {
+    if (response.ok) {
+      // Show thank you and QR code on successful submit
+      thankYouMessage.innerHTML = `<h3>Thank you for your feedback! We appreciate your input.</h3>`;
+      qrCode.style.display = 'block';
+
+      // Reload after 10 seconds
+      setTimeout(() => location.reload(), 10000);
     } else {
-      alert('Submission failed: ' + text);
+      alert('Failed to submit feedback. Please try again.');
     }
   })
-  .catch(err => {
-    alert('Error submitting feedback: ' + err.message);
+  .catch(error => {
+    console.error('Submission error:', error);
+    alert('Error submitting feedback. Please check your internet connection.');
   });
 }
+
+function showSurvey() {
+  document.getElementById('survey-container').style.display = 'flex';
+  const video = document.getElementById('background-video');
+  if (video) video.pause();
+  document.getElementById('rate-button').style.display = 'none';
+}
+
+document.getElementById('background-video').addEventListener('click', showSurvey);
+document.getElementById('rate-button').addEventListener('click', showSurvey);
