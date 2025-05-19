@@ -1,25 +1,41 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz66MwGqw-XneuWnYCFzsmXlZ219Jy9UDcnRBQnj9zu71-xLXpKzzZTmZ_P5ZOOvppi/exec';
-
 function submitFeedback(feedback) {
-  fetch(scriptURL, {
-    method: 'POST',
-    body: JSON.stringify({ feedback }),
+  // Send feedback to Google Apps Script Web App
+  fetch("https://script.google.com/macros/s/AKfycbz66MwGqw-XneuWnYCFzsmXlZ219Jy9UDcnRBQnj9zu71-xLXpKzzZTmZ_P5ZOOvppi/exec", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json"
     },
+    body: JSON.stringify({ feedback: feedback })
   })
   .then(response => {
     if (response.ok) {
-      document.getElementById('thank-you-message').style.display = 'block';
-      setTimeout(() => location.reload(), 10000);
+      console.log("Feedback submitted successfully");
+      showThankYou();
     } else {
-      alert('Failed to submit feedback. Please try again.');
+      console.error("Failed to submit feedback");
+      alert("Failed to submit feedback. Please try again.");
     }
   })
   .catch(error => {
-    console.error('Error:', error);
-    alert('Failed to submit feedback. Please check your internet connection.');
+    console.error("Error submitting feedback:", error);
+    alert("Error submitting feedback. Please check your connection.");
   });
+}
+
+function showThankYou() {
+  const surveyContainer = document.getElementById('survey-container');
+  const rateButton = document.getElementById('rate-button');
+
+  surveyContainer.innerHTML = `
+    <div class="thank-you-message">
+      <h2>Thank you for your feedback!</h2>
+      <p>Your input helps us improve our service.</p>
+    </div>
+  `;
+
+  setTimeout(() => {
+    location.reload();
+  }, 10000);
 }
 
 function showSurvey() {
