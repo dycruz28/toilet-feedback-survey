@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Toilet Feedback</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Added some quick inline styles for thank-you message and QR */
+    #thank-you-message {
+      display: none;
+      text-align: center;
+      margin-top: 40px;
+      color: #5D4037;
+    }
+    #qr-code {
+      display: none;
+      margin-top: 20px;
+    }
+    #qr-code img {
+      width: 150px;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Video Background -->
+  <div class="video-container">
+    <video id="background-video" autoplay muted loop>
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Floating Button -->
+  <button id="rate-button" class="floating-button">Touch Here to Rate</button>
+
+  <!-- Survey Container -->
+  <div class="container" id="survey-container" style="display: none;">
+    <div class="header">
+      <img src="calle logo.png" alt="Company Logo" class="logo" />
+    </div>
+    <h1>We Want To Hear From You!</h1>
+    <h2>Please rate the cleanliness of the toilet.</h2>
+
+    <div class="feedback-buttons">
+      <div class="feedback-item">
+        <button onclick="submitFeedback('Very Happy')">😀</button>
+        <label>Satisfied</label>
+      </div>
+      <div class="feedback-item">
+        <button onclick="submitFeedback('Happy')">🙂</button>
+        <label>Happy</label>
+      </div>
+      <div class="feedback-item">
+        <button onclick="submitFeedback('Neutral')">😐</button>
+        <label>Neutral</label>
+      </div>
+      <div class="feedback-item">
+        <button onclick="submitFeedback('Unhappy')">🙁</button>
+        <label>Unhappy</label>
+      </div>
+      <div class="feedback-item">
+        <button onclick="submitFeedback('Very Unhappy')">😠</button>
+        <label>Very Unhappy</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thank You Message Container -->
+  <div id="thank-you-message">
+    <h1>Thank You For Your Feedback!</h1>
+    <h2>We appreciate your time in helping us improve.</h2>
+    <div id="qr-code">
+      <img src="google.png" alt="QR Code to Google Rate" />
+      <p>Scan this QR to leave a detailed review!</p>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL_HERE";
+
+    function submitFeedback(feedback) {
+      const thankYouMessage = document.getElementById('thank-you-message');
+      const qrCode = document.getElementById('qr-code');
+
+      const payload = {
+        rating: feedback,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (response.ok) {
+          // Hide survey, show thank you message + QR
+          document.getElementById('survey-container').style.display = 'none';
+          thankYouMessage.style.display = 'block';
+          qrCode.style.display = 'block';
+
+          // Reload after 10 seconds
+          setTimeout(() => location.reload(), 10000);
+        } else {
+          alert('Failed to submit feedback. Please try again.');
+        }
+      })
+      .catch(error => {
+        console.error('Submission error:', error);
+        alert('Error submitting feedback. Please check your internet connection.');
+      });
+    }
+
+    function showSurvey() {
+      document.getElementById('survey-container').style.display = 'flex';
+      const video = document.getElementById('background-video');
+      if (video) video.pause();
+      document.getElementById('rate-button').style.display = 'none';
+    }
+
+    document.getElementById('background-video').addEventListener('click', showSurvey);
+    document.getElementById('rate-button').addEventListener('click', showSurvey);
+  </script>
+</body>
+</html>
