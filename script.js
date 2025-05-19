@@ -1,6 +1,6 @@
 function submitFeedback(feedback) {
   // Send feedback to Google Apps Script Web App
-  fetch("https://script.google.com/macros/s/AKfycbz66MwGqw-XneuWnYCFzsmXlZ219Jy9UDcnRBQnj9zu71-xLXpKzzZTmZ_P5ZOOvppi/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzGMvBLlNe5nitwufh7yau5mZ1SzZdxjwbId1ukNHc925bgrprgv6Q9_oighfbfrf-8/exec", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
